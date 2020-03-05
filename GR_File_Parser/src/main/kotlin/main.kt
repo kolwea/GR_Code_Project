@@ -6,11 +6,24 @@ fun main() {
     val fileName = RecordParser().javaClass.classLoader.getResource("Test_Input_A.txt")
     val parser = RecordParser()
     val records = parser.parseFile(File(fileName!!.toURI()))
-
-
-    val sorted = records!!.sortedBy { it.gender }
-    for(name in sorted){
-        println(name.gender)
+    val sortOptions = 2
+    val sortedList = parser.sortRecords(records!!,sortOptions)
+    when(sortOptions){
+        0->{
+            for(entry in records.sortedByDescending { it.lastName }){
+                println(entry.lastName)
+            }
+        }
+        1->{
+            for(entry in records.sortedByDescending { it.DOB }){
+                println(entry.DOB)
+            }
+        }
+        2->{
+            for(entry in records.sortedByDescending { it.lastName }){
+                println(entry.lastName)
+            }
+        }
     }
 }
 
@@ -23,7 +36,7 @@ data class Record(
 )
 
 class RecordParser {
-    fun parseFile(file: File):ArrayList<Record>?{
+    fun parseFile(file: File): ArrayList<Record>? {
         val records = ArrayList<Record>()
         try {
             file.forEachLine {
@@ -36,6 +49,15 @@ class RecordParser {
             println("File not found!")
         }
         return null
+    }
+
+    fun sortRecords(records:ArrayList<Record>,option:Int): Unit? {
+        return when (option) {
+            0 -> records.sortBy { it.DOB }
+            1 -> records.sortBy { it.DOB }
+            2 -> records.sortByDescending { it.lastName }
+            else -> null
+        }
     }
 
     private fun parseLine(line: String): Record? {
