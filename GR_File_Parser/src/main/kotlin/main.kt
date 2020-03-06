@@ -1,28 +1,21 @@
 import java.io.File
 import java.io.FileNotFoundException
 import java.lang.IndexOutOfBoundsException
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
+import kotlin.collections.ArrayList
 
 fun main() {
-    val fileName = RecordParser().javaClass.classLoader.getResource("Test_Input_A.txt")
-    val parser = RecordParser()
-    val records = parser.parseFile(File(fileName!!.toURI()))
-    val sortOptions = 2
-    val sortedList = parser.sortRecords(records!!,sortOptions)
-    when(sortOptions){
-        0->{
-            for(entry in records.sortedByDescending { it.lastName }){
-                println(entry.lastName)
-            }
-        }
-        1->{
-            for(entry in records.sortedByDescending { it.DOB }){
-                println(entry.DOB)
-            }
-        }
-        2->{
-            for(entry in records.sortedByDescending { it.lastName }){
-                println(entry.lastName)
-            }
+    val formatter = DateTimeFormatter.ofPattern("M/d/yyyy")
+    val recordManager = RecordManager()
+
+    val fileName = RecordManager().javaClass.classLoader.getResource("Test_Input_A.txt")
+
+    if(recordManager.parseFile(File(fileName!!.toURI()))) {
+        val sortedRecords = recordManager.getSortedRecords(1)
+        for(record in sortedRecords){
+            println("${record.firstName} ${record.lastName} ${record.favoriteColor} ${record.gender} ${record.DOB.format(formatter)}")
         }
     }
 }
@@ -32,36 +25,51 @@ data class Record(
     var firstName: String = "John",
     var gender: String = "Male",
     var favoriteColor: String = "Red",
-    var DOB: String = "01/01/1999"
+    var DOB: LocalDate = LocalDate.of(1999,1,1)
 )
 
-class RecordParser {
-    fun parseFile(file: File): ArrayList<Record>? {
-        val records = ArrayList<Record>()
+class RecordManager{
+    private val records = ArrayList<Record>()
+    private val formatter = DateTimeFormatter.ofPattern("M/d/yyyy")
+
+
+    fun parseFile(file: File): Boolean {
         try {
             file.forEachLine {
                 val record = parseLine(it)
                 if (record != null)
                     records.add(record)
             }
-            return records
+            return true
         } catch (e: FileNotFoundException) {
             println("File not found!")
         }
-        return null
+        return false
     }
 
-    fun sortRecords(records:ArrayList<Record>,option:Int): Unit? {
-        return when (option) {
-            0 -> records.sortBy { it.DOB }
-            1 -> records.sortBy { it.DOB }
-            2 -> records.sortByDescending { it.lastName }
-            else -> null
+    fun getSortedRecords(option: Int):List<Record>{
+        when (option) {
+            0 -> {
+                val males = records.filter { it.gender=="Male" }
+                val females = records.filter { it.gender=="Female" }
+                val mSorted = males.sortedBy { it.lastName }
+                val fSorted = females.sortedBy { it.lastName }
+                return fSorted + mSorted
+            }
+            1 -> return records.sortedBy { it.DOB }
+            2 -> return records.sortedByDescending { it.lastName }
         }
+        return records
     }
 
+    fun getRecords():ArrayList<Record>{
+        return records
+    }
+
+    //Helper functions
     private fun parseLine(line: String): Record? {
         var deliminator = " "
+
         if (line.contains("|")) deliminator = " | " else if (line.contains(",")) deliminator = ", "
         try {
             val components = line.split(deliminator)
@@ -70,11 +78,16 @@ class RecordParser {
                 firstName = components[1],
                 gender = components[2],
                 favoriteColor = components[3],
-                DOB = components[4]
+                DOB = LocalDate.parse(components[4],formatter)
             )
         } catch (e: IndexOutOfBoundsException) {
             println("Index out of bounds! - ParseLine")
+            println(e)
+        }catch (d:DateTimeParseException){
+            println("Unable to parse date!")
+            println(d)
         }
         return null
     }
+
 }
