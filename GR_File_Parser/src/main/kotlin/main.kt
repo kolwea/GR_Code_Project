@@ -42,7 +42,6 @@ class RecordManager{
             }
             return true
         } catch (e: FileNotFoundException) {
-            println("File not found!")
             throw e
         }
     }
@@ -68,10 +67,11 @@ class RecordManager{
 
     //Helper functions
     fun parseLine(line: String): Record? {
-        var deliminator = "   "
-        var record:Record? = null
+        var deliminator = " "
+        val record:Record?
 
         if (line.contains("|")) deliminator = " | " else if (line.contains(",")) deliminator = ", "
+
         try {
             val components = line.split(deliminator)
             record = Record(
@@ -82,12 +82,11 @@ class RecordManager{
                 DOB = LocalDate.parse(components[4],formatter)
             )
         } catch (e: IndexOutOfBoundsException) {
-            println("Index out of bounds! - ParseLine")
-            println(e)
-        }catch (d:DateTimeParseException){
-            println("Unable to parse date!")
-            println(d)
+            throw e
+        } catch (d:DateTimeParseException){
+            throw d
         }
+
         return record
     }
 

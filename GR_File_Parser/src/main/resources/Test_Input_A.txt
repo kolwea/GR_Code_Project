@@ -1,11 +1,11 @@
 Weathington | Kolbe | Male | Green | 9/8/1997
 Smith | Karl | Male | Red | 1/5/1992
 Johnson | Candy | Female | Blue | 4/2/1995
-Carlston | Tim | Male | Purple | 7/5/1967
-Demmy | Patrick | Female | Green | 2/2/1976
+Carlston, Tim, Male, Purple, 7/5/1967
+Demmy Patrick Female Green 2/2/1976
 Johns | Tammy | Female | Yellow | 11/2/2019
-Timber | Treton | Male | Magenta | 8/2/2011
-Dolton | Donna | Female | Pink | 6/2/1999
-Johnston | Kimball | Male | Blue | 3/2/1993
+Timber Treton Male Magenta 8/2/2011
+Dolton, Donna, Female, Pink, 6/2/1999
+Johnston, Kimball, Male, Blue, 3/2/1993
 Williams | Patricia | Male | Yellow | 1/2/1982
-Bray | Patrick | Male | Orange | 12/2/1972
+Bray Patrick Male Orange 12/2/1972

@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="RecordManagerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2020-03-06T03:45:18" hostname="DESKTOP-6H7NTLG" time="0.037">
+<testsuite name="RecordManagerTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2020-03-06T05:56:33" hostname="DESKTOP-6H7NTLG" time="0.257">
   <properties/>
-  <testcase name="parsing line returns correct record - pipe()" classname="RecordManagerTest" time="0.034"/>
+  <testcase name="assert throws exception while file does not exist()" classname="RecordManagerTest" time="0.048"/>
+  <testcase name="returns correct sorted list - option 0()" classname="RecordManagerTest" time="0.181"/>
+  <testcase name="assert throws exception when parsing line fails()" classname="RecordManagerTest" time="0.002"/>
+  <testcase name="assert throws exception when parsing date fails()" classname="RecordManagerTest" time="0.002"/>
+  <testcase name="parsing line returns correct record - pipe()" classname="RecordManagerTest" time="0.006"/>
+  <testcase name="correct number of records are returned()" classname="RecordManagerTest" time="0.005"/>
+  <testcase name="when file is parsed correctly returns true()" classname="RecordManagerTest" time="0.003"/>
   <testcase name="parsing line returns correct record - comma()" classname="RecordManagerTest" time="0.001"/>
   <testcase name="parsing line returns correct record - space()" classname="RecordManagerTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
