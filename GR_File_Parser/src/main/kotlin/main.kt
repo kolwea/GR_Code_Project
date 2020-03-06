@@ -32,19 +32,19 @@ class RecordManager{
     private val records = ArrayList<Record>()
     private val formatter = DateTimeFormatter.ofPattern("M/d/yyyy")
 
-
     fun parseFile(file: File): Boolean {
         try {
             file.forEachLine {
                 val record = parseLine(it)
-                if (record != null)
+                if (record != null) {
                     records.add(record)
+                }
             }
             return true
         } catch (e: FileNotFoundException) {
             println("File not found!")
+            throw e
         }
-        return false
     }
 
     fun getSortedRecords(option: Int):List<Record>{
@@ -67,13 +67,14 @@ class RecordManager{
     }
 
     //Helper functions
-    private fun parseLine(line: String): Record? {
-        var deliminator = " "
+    fun parseLine(line: String): Record? {
+        var deliminator = "   "
+        var record:Record? = null
 
         if (line.contains("|")) deliminator = " | " else if (line.contains(",")) deliminator = ", "
         try {
             val components = line.split(deliminator)
-            return Record(
+            record = Record(
                 lastName = components[0],
                 firstName = components[1],
                 gender = components[2],
@@ -87,7 +88,7 @@ class RecordManager{
             println("Unable to parse date!")
             println(d)
         }
-        return null
+        return record
     }
 
 }
