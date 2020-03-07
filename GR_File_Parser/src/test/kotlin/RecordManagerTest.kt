@@ -70,7 +70,7 @@ internal class RecordManagerTest {
         val sorted = manager.getSortedRecords(0)
     }
 
-    
+
 
 
 
