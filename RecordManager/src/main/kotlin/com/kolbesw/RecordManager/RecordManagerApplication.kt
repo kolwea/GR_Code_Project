@@ -2,33 +2,45 @@ package com.kolbesw.RecordManager
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.io.File
 import java.io.FileNotFoundException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
+var fileLocation: String? = null
+var displayOption: Int = 0
+
 @SpringBootApplication
-class RecordManagerApplication(args: Array<String>) {
+class RecordManagerApplication {
+    private final val recordService = RecordService()
+
     init {
-        val formatter = DateTimeFormatter.ofPattern("M/d/yyyy")
-        val recordManager = RecordService()
-
-        val fileName = RecordService().javaClass.classLoader.getResource("Test_Input_A.txt")
-
-        if (recordManager.parseFile(File(fileName!!.toURI()))) {
-            val sortedRecords = recordManager.getSortedRecords(1)
-            for (record in sortedRecords) {
-                println("${record.firstName} ${record.lastName} ${record.favoriteColor} ${record.gender} ${record.DOB.format(formatter)}")
+        if (fileLocation != null) {
+            val file = File(fileLocation!!)
+            if (file.exists()) {
+                recordService.parseFile(file)
+                println("Entries:")
+                for (entry in recordService.getSortedRecords(displayOption)) {
+                    println(entry)
+                }
+                println()
             }
         }
     }
 }
 
 fun main(args: Array<String>) {
+    if (args.isNotEmpty())
+        fileLocation = args[0]
+    if (args.size == 2)
+        displayOption = args[1].toInt()
+    else {
+        println("Invalid input. Try 'target.jar <FILE_LOCATION?> <OUTPUT_OPTION_INT?>'")
+        return
+    }
+
     runApplication<RecordManagerApplication>(*args)
 }
 
@@ -59,11 +71,9 @@ class RecordService() {
         }
     }
 
-    fun getRecords(): ArrayList<Record> {
-        return records
-    }
-
     fun getSortedRecords(option: Int): List<Record> {
+        if (records.isEmpty() && fileLocation != null)
+            parseFile(File(fileLocation))
         when (option) {
             0 -> {
                 val males = records.filter { it.gender == "Male" }
@@ -103,8 +113,20 @@ class RecordService() {
         return record
     }
 
+    @PostMapping("/records")
+    fun `create new record from line input`(@RequestBody line: String): Record? {
+        return parseLine(line)
+    }
 
-    @GetMapping("/records")
-    fun getRecords(@RequestParam(value = "sortBy", defaultValue = "gender") sortBy: String) =
-            records[0]
+    @GetMapping("/records/gender")
+    fun `get records sorted by gender`(@RequestParam(value = "sortBy", defaultValue = "gender") sortBy: String) =
+            getSortedRecords(0)
+
+    @GetMapping("/records/birthdate")
+    fun `get records sorted by birthday`(@RequestParam(value = "sortBy", defaultValue = "gender") sortBy: String) =
+            getSortedRecords(1)
+
+    @GetMapping("/records/name")
+    fun `get records sorted by name`(@RequestParam(value = "sortBy", defaultValue = "gender") sortBy: String) =
+            getSortedRecords(2)
 }
