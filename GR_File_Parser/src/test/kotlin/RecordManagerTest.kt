@@ -6,7 +6,7 @@ import java.io.FileNotFoundException
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
-internal class Context(){}
+internal class Context
 
 internal class RecordManagerTest {
 
@@ -68,8 +68,9 @@ internal class RecordManagerTest {
         manager.parseFile(File(fileName!!.toURI()))
         val records = manager.getRecords()
         val sorted = manager.getSortedRecords(0)
-
     }
+
+    
 
 
 
