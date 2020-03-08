@@ -9,40 +9,20 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
-var fileLocation: String? = null
-var displayOption: Int = 0
+private var fileLocation: String? = null
+private var displayOption: Int = 0
 
 @SpringBootApplication
-class RecordManagerApplication {
-    private final val recordService = RecordService()
-
-    init {
-        if (fileLocation != null) {
-            val file = File(fileLocation!!)
-            if (file.exists()) {
-                recordService.parseFile(file)
-                println("Entries:")
-                for (entry in recordService.getSortedRecords(displayOption)) {
-                    println(entry)
-                }
-                println()
-            }
-        }
-    }
-}
+class RecordManagerApplication
 
 fun main(args: Array<String>) {
     if (args.isNotEmpty())
         fileLocation = args[0]
     if (args.size == 2)
         displayOption = args[1].toInt()
-    else {
-        println("Invalid input. Try 'target.jar <FILE_LOCATION?> <OUTPUT_OPTION_INT?>'")
-        return
-    }
-
     runApplication<RecordManagerApplication>(*args)
 }
+
 
 data class Record(
         var lastName: String = "Doe",
@@ -54,10 +34,15 @@ data class Record(
 
 @RestController
 class RecordService() {
-    private val records = ArrayList<Record>()
-    private val formatter = DateTimeFormatter.ofPattern("M/d/yyyy")
+    val records = ArrayList<Record>()
+    val formatter = DateTimeFormatter.ofPattern("M/d/yyyy")
 
-    fun parseFile(file: File): Boolean {
+    init {
+        if(fileLocation != null)
+            parseFile(File(fileLocation!!))
+    }
+
+    final fun parseFile(file: File): Boolean {
         try {
             file.forEachLine {
                 val record = parseLine(it)
@@ -72,8 +57,6 @@ class RecordService() {
     }
 
     fun getSortedRecords(option: Int): List<Record> {
-        if (records.isEmpty() && fileLocation != null)
-            parseFile(File(fileLocation))
         when (option) {
             0 -> {
                 val males = records.filter { it.gender == "Male" }
@@ -88,7 +71,6 @@ class RecordService() {
         return records
     }
 
-    //Helper functions
     fun parseLine(line: String): Record? {
         var deliminator = " "
         val record: Record?
@@ -109,24 +91,26 @@ class RecordService() {
         } catch (d: DateTimeParseException) {
             throw d
         }
-
         return record
     }
 
     @PostMapping("/records")
     fun `create new record from line input`(@RequestBody line: String): Record? {
-        return parseLine(line)
+        val newRecord = parseLine(line)
+        if (newRecord != null)
+            records.add(newRecord)
+        return newRecord
     }
 
     @GetMapping("/records/gender")
-    fun `get records sorted by gender`(@RequestParam(value = "sortBy", defaultValue = "gender") sortBy: String) =
+    fun `get records sorted by gender`() =
             getSortedRecords(0)
 
     @GetMapping("/records/birthdate")
-    fun `get records sorted by birthday`(@RequestParam(value = "sortBy", defaultValue = "gender") sortBy: String) =
+    fun `get records sorted by birthday`() =
             getSortedRecords(1)
 
     @GetMapping("/records/name")
-    fun `get records sorted by name`(@RequestParam(value = "sortBy", defaultValue = "gender") sortBy: String) =
+    fun `get records sorted by name`() =
             getSortedRecords(2)
 }

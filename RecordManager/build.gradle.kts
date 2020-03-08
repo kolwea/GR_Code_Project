@@ -25,6 +25,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}
+	testCompile ("org.mockito:mockito-core:2.+")
 	testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
 
 }
