@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5c4e92f7-3c5b-4be8-b725-e3cb3c9e6623" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/resources/Test_Input_A.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/com/kolbesw/RecordManager/RecordManagerApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/com/kolbesw/RecordManager/RecordManagerApplication.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/com/kolbesw/RecordManager/RecordManagerApplicationTests.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/com/kolbesw/RecordManager/RecordManagerApplicationTests.kt" afterDir="false" />
-    </list>
+    <list default="true" id="5c4e92f7-3c5b-4be8-b725-e3cb3c9e6623" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
