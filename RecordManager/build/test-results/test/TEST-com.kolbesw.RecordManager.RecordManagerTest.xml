@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.kolbesw.RecordManager.RecordManagerTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2020-03-08T18:56:24" hostname="DESKTOP-6H7NTLG" time="0.017">
+<testsuite name="com.kolbesw.RecordManager.RecordManagerTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2020-03-09T06:44:42" hostname="DESKTOP-6H7NTLG" time="0.258">
   <properties/>
-  <testcase name="assert throws exception while file does not exist()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.003"/>
-  <testcase name="assert throws exception when parsing line fails()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.002"/>
-  <testcase name="assert throws exception when parsing date fails()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.001"/>
+  <testcase name="assert correct bool on pass or fail()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.104"/>
+  <testcase name="returns correct sorted list - option 0()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.106"/>
+  <testcase name="returns correct sorted list - option 1()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.004"/>
+  <testcase name="returns correct sorted list - option 2()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.003"/>
+  <testcase name="assert throws exception when parsing line fails()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.004"/>
+  <testcase name="adding new entry via rest()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.001"/>
+  <testcase name="assert throws exception when parsing date fails()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.002"/>
   <testcase name="parsing line returns correct record - pipe()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.001"/>
-  <testcase name="correct number of records are returned()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.002"/>
+  <testcase name="correct number of records are returned()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.006"/>
   <testcase name="when file is parsed correctly returns true()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.003"/>
-  <testcase name="parsing line returns correct record - comma()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.001"/>
+  <testcase name="parsing line returns correct record - comma()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.002"/>
   <testcase name="parsing line returns correct record - space()" classname="com.kolbesw.RecordManager.RecordManagerTest" time="0.001"/>
-  <system-out><![CDATA[]]></system-out>
+  <system-out><![CDATA[Starting RESTful service...
+File not found!
+File successfully parsed!
+Starting RESTful service...
+File successfully parsed!
+Starting RESTful service...
+File successfully parsed!
+Starting RESTful service...
+File successfully parsed!
+Starting RESTful service...
+Starting RESTful service...
+Starting RESTful service...
+Starting RESTful service...
+Starting RESTful service...
+Starting RESTful service...
+File successfully parsed!
+Starting RESTful service...
+File successfully parsed!
+Starting RESTful service...
+Starting RESTful service...
+]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

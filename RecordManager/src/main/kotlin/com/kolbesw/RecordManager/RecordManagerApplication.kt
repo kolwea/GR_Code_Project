@@ -5,6 +5,7 @@ import org.springframework.boot.runApplication
 import org.springframework.web.bind.annotation.*
 import java.io.File
 import java.io.FileNotFoundException
+import java.lang.reflect.InvocationTargetException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
@@ -19,7 +20,15 @@ fun main(args: Array<String>) {
     if (args.isNotEmpty())
         fileLocation = args[0]
     if (args.size == 2)
-        displayOption = args[1].toInt()
+        try {
+            val sortNum = args[1].toInt()
+            if(sortNum in 0..2) {
+                displayOption = sortNum
+            }
+        }catch (e:InvocationTargetException){
+            println("Failed to parse input ordering argument. Input must be between 0-2. Try:")
+            println("java -jar <TARGET_JAR> <TARGET_FILE> <ORDERING_INT>")
+        }
     runApplication<RecordManagerApplication>(*args)
 }
 
@@ -34,29 +43,45 @@ data class Record(
 
 @RestController
 class RecordService() {
-    val records = ArrayList<Record>()
-    val formatter = DateTimeFormatter.ofPattern("M/d/yyyy")
+    final val records = ArrayList<Record>()
+    val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("M/d/yyyy")
 
     init {
-        if(fileLocation != null)
-            parseFile(File(fileLocation!!))
+        println("Starting RESTful service...")
+        if(fileLocation != null) {
+            val parsed = parseFile(File(fileLocation!!))
+            if(parsed){
+                println()
+                when(displayOption){
+                    0-> println("Records sorted by gender:")
+                    1-> println("Records sorted by birthday:")
+                    2-> println("Records sorted by name:")
+                }
+                for(record in getSortedRecords(displayOption)){
+                    println(record)
+                }
+                println()
+            }
+        }
     }
 
     final fun parseFile(file: File): Boolean {
-        try {
+        return try {
             file.forEachLine {
                 val record = parseLine(it)
                 if (record != null) {
                     records.add(record)
                 }
             }
-            return true
+            println("File successfully parsed!")
+            true
         } catch (e: FileNotFoundException) {
-            throw e
+            println("File not found!")
+            false
         }
     }
 
-    fun getSortedRecords(option: Int): List<Record> {
+    final fun getSortedRecords(option: Int): List<Record> {
         when (option) {
             0 -> {
                 val males = records.filter { it.gender == "Male" }
