@@ -11,6 +11,9 @@ I began by researching the aspects I was most unfaimilar with, creating test in 
 The solution/project has been packaged in a JAR file located in /output/libs and can be run using the java cmd prompt command.
 
 ## Images
+### Sample File
+![Coverage](https://raw.githubusercontent.com/kolwea/GR_Code_Project/master/Images/GR_Sample_File.PNG "Code Coverage")
+
 ### Coverage
 ![Coverage](https://raw.githubusercontent.com/kolwea/GR_Code_Project/master/Images/GR_Coverage.PNG "Code Coverage")
 ![Coverage](https://raw.githubusercontent.com/kolwea/GR_Code_Project/master/Images/GR_CoverageB.PNG "Code Coverage")
