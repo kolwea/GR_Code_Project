@@ -1,13 +1,9 @@
 package com.kolbesw.RecordManager
 
-import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito.mock
-import org.springframework.boot.test.context.SpringBootTest
 import java.io.File
 import java.io.FileNotFoundException
 import java.time.LocalDate
@@ -15,76 +11,15 @@ import java.time.format.DateTimeParseException
 
 internal class Context
 
-@SpringBootTest
-class RecordManagerApplicationTests {
-    var recordService: RecordService = RecordService()
-
-    @Mock
-    val testRecord: Record = mock(Record::class.java)
-
-    private val fileName = Context().javaClass.classLoader.getResource("Test_Input_A.txt")
-
-    @Test
-    fun `record service instantiated correctly`() {
-        assert(recordService.getSortedRecords(0).isEmpty())
-        assert(recordService.formatter != null)
-    }
-
-
-    @Test
-    fun addRecord() {
-//		val request = MockHttpServletRequest()
-//		RequestContextHolder.setRequestAttributes(ServletRequestAttributes(request))
-//
-//		`when`(recordService.addRecord(ArgumentMatchers.any(Record::class.java))).thenReturn(true)
-//
-//		val record = Record("Duck", "Donald", "Male", "Blue", LocalDate.of(1990,5,12))
-//		val response = recordService!!.parseLine("Duck Donald Male Blue 5/12/1990")
-//
-//		assert(response!! == record)
-    }
-
-//
-    @Test
-    fun `returns correct sorted list - option 0`() {
-        recordService.parseFile(File(fileName!!.toURI()))
-        val records = recordService.`get records sorted by gender`()
-        assertEquals(recordService.getSortedRecords(0), records)
-    }
-
-    @Test
-    fun `returns correct sorted list - option 1`() {
-        recordService.parseFile(File(fileName!!.toURI()))
-        val records = recordService.`get records sorted by birthday`()
-        assertEquals(recordService.getSortedRecords(1), records)
-    }
-
-    @Test
-    fun `returns correct sorted list - option 2`() {
-        recordService.parseFile(File(fileName!!.toURI()))
-        val records = recordService.`get records sorted by name`()
-        assertEquals(recordService.getSortedRecords(2), records)
-    }
-
-    @Test
-    fun `adding new entry via rest`() {
-        recordService.`create new record from line input`("Green John Male Red 1/4/1932")
-        assert(recordService.records.contains(
-                Record("Green", "John", "Male", "Red", LocalDate.of(1932, 1, 4))
-        ))
-    }
-
-
-}
-
 class RecordManagerTest {
 
     private var recordService: RecordService = RecordService()
     private val fileName = Context().javaClass.classLoader.getResource("Test_Input_A.txt")
 
     @Test
-    fun `assert throws exception while file does not exist`() {
-        assertThrows<FileNotFoundException> { recordService.parseFile(File("dasdasfas sadsadasda")) }
+    fun `assert correct bool on pass or fail`() {
+        assertFalse( recordService.parseFile(File("dasdasfas sadsadasda")))
+        assert(recordService.parseFile(File(fileName!!.toURI())))
     }
 
     @Test
@@ -134,5 +69,35 @@ class RecordManagerTest {
         records = manager.getSortedRecords(2)
         assertEquals(i, records.size)
     }
+
+    @Test
+    fun `returns correct sorted list - option 0`() {
+        recordService.parseFile(File(fileName!!.toURI()))
+        val records = recordService.`get records sorted by gender`()
+        assertEquals(recordService.getSortedRecords(0), records)
+    }
+
+    @Test
+    fun `returns correct sorted list - option 1`() {
+        recordService.parseFile(File(fileName!!.toURI()))
+        val records = recordService.`get records sorted by birthday`()
+        assertEquals(recordService.getSortedRecords(1), records)
+    }
+
+    @Test
+    fun `returns correct sorted list - option 2`() {
+        recordService.parseFile(File(fileName!!.toURI()))
+        val records = recordService.`get records sorted by name`()
+        assertEquals(recordService.getSortedRecords(2), records)
+    }
+
+    @Test
+    fun `adding new entry via rest`() {
+        recordService.`create new record from line input`("Green John Male Red 1/4/1932")
+        assert(recordService.records.contains(
+                Record("Green", "John", "Male", "Red", LocalDate.of(1932, 1, 4))
+        ))
+    }
+
 
 }
